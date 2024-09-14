@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .lock-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: red;
+            display: none;
+        }
+        .balance {
+            font-size: 24px;
+            color: #333;
+        }
+        .task-buttons {
+            margin-top: 20px;
+        }
+        .task-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+        .task-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .task-section {
+            margin-top: 20px;
+            display: none;
+        }
+        .task-section.active {
+            display: block;
+        }
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .task-list a {
+            margin: 5px 0;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            position: relative;
+        }
+        .task-list a.completed {
+            color: red; /* Completed tasks turn red */
+            pointer-events: none;
+        }
+        .task-list a.completed::after {
+            content: ' ✓';
+            color: green;
+            position: absolute;
+            right: 0;
+        }
+        #displayPhoto {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-top: 10px;
+        }
+        .details {
+            margin-top: 10px;
+        }
+        .subscribe-button, .follow-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .follow-button {
+            background-color: #007bff;
+        }
+        .subscribe-button:hover {
+            background-color: #cc0000;
+        }
+        .follow-button:hover {
+            background-color: #0056b3;
+        }
+        .eye-icon {
+            cursor: pointer;
+            position: absolute;
+            margin-left: -30px;
+            margin-top: 15px;
+        }
+        .timer {
+            font-size: 24px;
+            color: red;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span id="lockIcon" class="lock-icon">🔒</span>
+        <h1>Create Account</h1>
+        <form id="accountForm">
+            <label for="username">Name:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="photo">Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <span class="eye-icon" onclick="togglePassword('password')">👁️</span><br><br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <span class="eye-icon" onclick="togglePassword('confirmPassword')">👁️</span><br><br>
+            <button type="submit">Create Account</button>
+        </form>
+        <div id="accountDetails" style="display:none;">
+            <h2>Account Created Successfully!</h2>
+            <img id="displayPhoto" alt="User Photo"><br>
+            <div class="details">
+                <p>Name: <span id="displayUsername"></span></p>
+                <p>Phone Number: <span id="displayPhone"></span></p>
+                <p>Account Number: <span id="displayAccountNumber"></span></p>
+            </div>
+            <p class="balance">Current Balance: ৳<span id="displayBalance">5</span></p>
+            <button id="subscribeButton" class="subscribe-button" onclick="subscribeToChannel()">Subscribe to New Channel</button>
+            <button id="followButton" class="follow-button" onclick="followOnPlatform()">Follow on Platform</button>
+            <div class="task-buttons">
+                <button onclick="showTasks('youtube')">YouTube Tasks</button>
+                <button onclick="showTasks('facebook')">Facebook Tasks</button>
+            </div>
+            <div id="youtubeTasks" class="task-section">
+                <div class="task-list">
+                    <!-- YouTube Video Tasks -->
+                    <a href="https://youtu.be/CLkoSOabqTk?si=fl9TyM1CTSo7Ottd" target="_blank" class="taskLink" data-task-id="1">Task 1: Watch YouTube Video 1</a>
+                    <a href="https://youtu.be/xrQbwxrKlxY?si=HYcGdB8R-B3G862x" target="_blank" class="taskLink" data-task-id="2">Task 2: Watch YouTube Video 2</a>
+                    <a href="https://youtu.be/pXuVYtp82xQ?si=-rVPxqZgpXSWRyKA" target="_blank" class="taskLink" data-task-id="3">Task 3: Watch YouTube Video 3</a>
+                    <a href="https://youtu.be/_bwdlxpFAPg?si=WWahdCNSQzF2VWKh" target="_blank" class="taskLink" data-task-id="4">Task 4: Watch YouTube Video 4</a>
+                   <a href="https://youtube.com/shorts/ShziBpW-MOQ?si=oybK2Q7fMGBZf4Iz" target="_blank" class="taskLink" data-task-id="5">Task 5: Watch YouTube Video 5</a>
+                </div>
+            </div>
+            <div id="facebookTasks" class="task-section">
+                <div class="task-list">
+                    <!-- Facebook Video Tasks -->
+                    <a href="https://www.facebook.com/61561972394774/videos/1181983029746891/?mibextid=NTRm0r7WZyOdZZsz" target="_blank" class="taskLink" data-task-id="6">Task 6: Watch Facebook Video 1</a>
+                    <a href="https://fb.watch/uqlBf3q5hC/?mibextid=NTRm0r7WZyOdZZsz" target="_blank" class="taskLink" data-task-id="7">Task 7: Watch Facebook Video 2</a>
+                    <a href="https://fb.watch/uqlCc2eHqi/?mibextid=NTRm0r7WZyOdZZsz" target="_blank" class="taskLink" data-task-id="8">Task 8: Watch Facebook Video 3</a>
+                    <a href="https://www.facebook.com/reel/1219036689276947?mibextid=NTRm0r7WZyOdZZsz" target="_blank" class="taskLink" data-task-id="9">Task 9: Watch Facebook Video 4</a>
+                    <a href="https://www.facebook.com/reel/794890402507773?mibextid=NTRm0r7WZyOdZZsz" target="_blank" class="taskLink" data-task-id="10">Task 10: Watch Facebook Video 5</a>
+                </div>
+            </div>
+            <div id="timer" style="display:none; font-size: 36px; font-weight: bold; margin-top: 20px;">
+                <p>Time Remaining: <span id="countdown">10</span> seconds</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var isSubscribed = false;
+        var isFollowed = false;
+        var completedTasks = {};
+        var taskCount = 10;
+        var lockTimeout;
+        var countdownInterval;
+
+        document.getElementById('accountForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            var username = document.getElementById('username').value;
+            var phone = document.getElementById('phone').value;
+            var photo = document.getElementById('photo').files[0];
+            
+            var accountNumber = 'AC' + Math.floor(Math.random() * 1000000);
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('displayPhoto').src = e.target.result;
+            };
+            reader.readAsDataURL(photo);
+
+            document.getElementById('displayUsername').textContent = username;
+            document.getElementById('displayPhone').textContent = phone;
+            document.getElementById('displayAccountNumber').textContent = accountNumber;
+            document.getElementById('accountDetails').style.display = 'block';
+            document.getElementById('accountForm').style.display = 'none';
+        });
+
+        function subscribeToChannel() {
+            window.open('https://youtube.com/@badboys.10?si=52PGTY-zyPAi3wI8', '_blank');
+            isSubscribed = true;
+            checkIfAllTasksCompleted();
+        }
+
+        function followOnPlatform() {
+            window.open('https://www.facebook.com/profile.php?id=61561972394774', '_blank');
+            isFollowed = true;
+            checkIfAllTasksCompleted();
+        }
+
+        function showTasks(platform) {
+            document.getElementById('youtubeTasks').classList.remove('active');
+            document.getElementById('facebookTasks').classList.remove('active');
+            if (platform === 'youtube') {
+                document.getElementById('youtubeTasks').classList.add('active');
+            } else if (platform === 'facebook') {
+                document.getElementById('facebookTasks').classList.add('active');
+            }
+        }
+
+        function checkIfAllTasksCompleted() {
+            if (isSubscribed && isFollowed) {
+                if (Object.keys(completedTasks).length === taskCount) {
+                    startTimer();
+                }
+            }
+        }
+
+        function startTimer() {
+            var timer = document.getElementById('timer');
+            timer.style.display = 'block';
+            var countdown = document.getElementById('countdown');
+            var timeRemaining = 10;
+            countdown.textContent = timeRemaining;
+
+            countdownInterval = setInterval(function() {
+                timeRemaining--;
+                countdown.textContent = timeRemaining;
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    setTimeout(function() {
+                        resetTasks();
+                        timer.style.display = 'none';
+                    }, 30000);
+                }
+            }, 1000);
+        }
+
+        function resetTasks() {
+            isSubscribed = false;
+            isFollowed = false;
+            completedTasks = {};
+            document.querySelectorAll('.taskLink').forEach(link => {
+                link.classList.remove('completed');
+            });
+        }
+
+        document.querySelectorAll('.taskLink').forEach(link => {
+            link.addEventListener('click', function(event) {
+                var taskId = event.target.getAttribute('data-task-id');
+                setTimeout(function() {
+                    completeTask(taskId);
+                }, 10000);
+            });
+        });
+
+        function completeTask(taskId) {
+            completedTasks[taskId] = true;
+            document.querySelector(`.taskLink[data-task-id="${taskId}"]`).classList.add('completed');
+            updateBalance();
+        }
+
+        function updateBalance() {
+            var balance = document.getElementById('displayBalance');
+            balance.textContent = parseInt(balance.textContent) + 1;
+        }
+
+        function togglePassword(id) {
+            var passwordInput = document.getElementById(id);
+            passwordInput.type = (passwordInput.type === 'password') ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>
